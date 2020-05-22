@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static com.testSpring.Blog.controllers.gitUtils.FileSystemUtils.changeOrAddFileToBranch;
+import static com.testSpring.Blog.controllers.gitUtils.FileSystemUtils.loadHistorySettings;
 
 @Controller
 public class FileUploadController {
@@ -40,6 +41,7 @@ public class FileUploadController {
                             @RequestParam("file") MultipartFile file,
                             @RequestParam("comment") String comment,
                             @RequestParam("hash") String hash) throws IOException {
+        loadHistorySettings();
         String pathToUserFolder = new File("").getAbsolutePath() + "\\users\\" + userName;
         //Создаю тут папку под пользователя
         if (!new File(pathToUserFolder).exists()) {
@@ -55,13 +57,8 @@ public class FileUploadController {
         FileSystemUtils.makePathToFile(pathToUserBranch + path);
 
         if (!file.isEmpty()) {
-            if (!new File(pathToUserBranch + path).exists()) {
-                changeOrAddFileToBranch(hash, userName, branch, pathToUserBranch, path, file.getName(), comment, file);
-                return "";
-            } else {
-                // тут уже будем смотреть, тип что уже существует такой - меняем строчки
-                return "";
-            }
+            changeOrAddFileToBranch(hash, userName, branch, pathToUserBranch, path, file.getName(), comment, file);
+            return "файлы успешно загружены";
         } else {
             return "Вам не удалось загрузить " + path + " потому что файл пустой.";
         }

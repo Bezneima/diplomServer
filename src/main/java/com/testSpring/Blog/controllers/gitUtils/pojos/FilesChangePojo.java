@@ -4,6 +4,7 @@ public class FilesChangePojo {
     public String fileName;
     public String filePath;
     public int lineNumber;
+    public LineStatus status;
     public String textOfChange;
 
     public FilesChangePojo(int lineNumber, String textOfChange, String fileName, String filePath) {

@@ -15,12 +15,13 @@ public class Branches {
     }
 
     public Branch findBranch(String branchName) {
-        for (Branch branch : branches) {
+        Branches branches = Branches.getInstance();
+        for (Branch branch : branches.branches) {
             if (branch.name.equals(branchName))
                 return branch;
         }
         Branch branch = new Branch(branchName);
-        branches.add(branch);
+        branches.branches.add(branch);
         return branch;
     }
 }

@@ -2,10 +2,7 @@ package com.testSpring.Blog.controllers.gitUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.testSpring.Blog.controllers.gitUtils.pojos.Branch;
-import com.testSpring.Blog.controllers.gitUtils.pojos.Branches;
-import com.testSpring.Blog.controllers.gitUtils.pojos.Commit;
-import com.testSpring.Blog.controllers.gitUtils.pojos.FilesChangePojo;
+import com.testSpring.Blog.controllers.gitUtils.pojos.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -41,6 +38,7 @@ public class FileSystemUtils {
             e.printStackTrace();
         }
         //Ну все, дальше чисто коммит сохранить и все
+        commit.Id = getNextCommitIdInBranch(branchName);
         branch.commits.add(commit);
         checkSimilarCommitsInBranch(branchName, hash);
         writeFile(getCurrentWorkedPath() + "\\CommitHistory.st", makeJSONString(branches));
@@ -149,14 +147,33 @@ public class FileSystemUtils {
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
+
         // Считал новый файл и вроде все не так уж и плохо
         // Так вот так вот как-то, каряво, но время ппц жмет
-        for (int i = 0; i < inputFileLines.size(); i++) {
-            if (savedFileLines.size() > i && savedFileLines.get(i) != null) {//Если в старом файле есть такая строчка
-                if (!savedFileLines.get(i).textOfChange.equals(inputFileLines.get(i).textOfChange))
+        // Поитому тут если файл был меньше то так иначе добаваить строчки с пометкой удалил
+        if (inputFileLines.size() > savedFileLines.size()) {
+            for (int i = 0; i < inputFileLines.size(); i++) {
+                if (savedFileLines.size() > i && savedFileLines.get(i) != null) {//Если в старом файле есть такая строчка
+                    if (!savedFileLines.get(i).textOfChange.equals(inputFileLines.get(i).textOfChange)) {
+                        inputFileLines.get(i).status = LineStatus.CHANGED;
+                        outputResult.add(inputFileLines.get(i));
+                    }
+                } else {
+                    inputFileLines.get(i).status = LineStatus.ADDED;
                     outputResult.add(inputFileLines.get(i));
-            } else {
-                outputResult.add(inputFileLines.get(i));
+                }
+            }
+        } else {//TODO Вот это рил калич перепиши если успеешь
+            for (int i = 0; i < savedFileLines.size(); i++) {
+                if (inputFileLines.size() > i && inputFileLines.get(i) != null) {//Если в новом файле есть такая строчка
+                    if (!savedFileLines.get(i).textOfChange.equals(inputFileLines.get(i).textOfChange)) {
+                        inputFileLines.get(i).status = LineStatus.CHANGED;
+                        outputResult.add(inputFileLines.get(i));
+                    }
+                } else {
+                    savedFileLines.get(i).status = LineStatus.REMOVED;
+                    outputResult.add(savedFileLines.get(i));
+                }
             }
         }
 
@@ -177,7 +194,11 @@ public class FileSystemUtils {
 
         Gson gson = new Gson();
         Branches branches = Branches.getInstance();
-        branches = gson.fromJson(SettingsFileText.toString(), Branches.class);
+        try {
+            branches.branches = gson.fromJson(SettingsFileText.toString(), Branches.class).branches;
+        } catch (Exception e) {
+            System.out.println("Первая попытка");
+        }
     }
 
 }
