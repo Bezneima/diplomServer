@@ -14,6 +14,13 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class FileSystemUtils {
+
+    public static class SendingFile {
+        public String fileName;
+        public String path;
+        public String text;
+    }
+
     public static void makePathToFile(String path) {
         File file = new File(path);
         file.getParentFile().mkdirs();
@@ -71,7 +78,7 @@ public class FileSystemUtils {
         branch.commits.add(combinedСommit);
     }
 
-    private static String makeJSONString(Object obj) {
+    public static String makeJSONString(Object obj) {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         return gson.toJson(obj);
@@ -199,6 +206,40 @@ public class FileSystemUtils {
         } catch (Exception e) {
             System.out.println("Первая попытка");
         }
+    }
+
+    public static String readFile(String path) {
+        StringBuilder result = new StringBuilder();
+        try (FileInputStream fin = new FileInputStream(path)) {
+            int i = -1;
+            while ((i = fin.read()) != -1) {
+
+                result.append((char) i);
+            }
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return result.toString();
+    }
+
+    public static List<SendingFile> listFilesForFolder(final File folder) {
+        List<SendingFile> allFiles = new ArrayList<>();
+        Branches branches = Branches.getInstance();
+        for (final File fileEntry : folder.listFiles()) {
+            if (fileEntry.isDirectory()) {
+                // щас в allFiles все файлы, что он добавил ранее;
+                allFiles.addAll(listFilesForFolder(fileEntry));
+            } else {
+                SendingFile newfile = new SendingFile();
+                newfile.fileName = fileEntry.getName();
+                newfile.text = readFile(fileEntry.getPath());
+                newfile.path = fileEntry.getPath();
+                allFiles.add(newfile);
+                //System.out.println(fileEntry.getName());
+                //System.out.println(fileEntry.getPath().replace(getCurrentWorkedPath(), ""));
+            }
+        }
+        return allFiles;
     }
 
 }

@@ -13,9 +13,13 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
+import static com.testSpring.Blog.controllers.gitUtils.FileSystemUtils.SendingFile;
 import static com.testSpring.Blog.controllers.gitUtils.FileSystemUtils.changeOrAddFileToBranch;
+import static com.testSpring.Blog.controllers.gitUtils.FileSystemUtils.listFilesForFolder;
 import static com.testSpring.Blog.controllers.gitUtils.FileSystemUtils.loadHistorySettings;
+import static com.testSpring.Blog.controllers.gitUtils.FileSystemUtils.makeJSONString;
 
 @Controller
 public class FileUploadController {
@@ -26,10 +30,28 @@ public class FileUploadController {
         return "Вы можете загружать файл с использованием того же URL.";
     }
 
-    @RequestMapping(value = "/test")
+    @RequestMapping(value = "/getFilesFromBranch", method = RequestMethod.POST)
     public @ResponseBody
-    void testingController() {
-        System.out.println("Пошло говно");
+    String getBranch(@RequestParam("userName") String userName,
+                     @RequestParam("branch") String branch) throws IOException {
+        loadHistorySettings();
+        String pathToUserFolder = new File("").getAbsolutePath() + "\\users\\" + userName;
+        //Создаю тут папку под пользователя
+        if (!new File(pathToUserFolder).exists()) {
+            return "No user started";
+        }
+        String pathToUserBranch = pathToUserFolder + "\\" + branch;
+        //Папка под пользователя точно уже есть
+        if (!new File(pathToUserBranch).exists()) {
+            return "No branch started";
+        }
+
+        String resultJSON;
+        List<SendingFile> sendingFiles = listFilesForFolder(new File(pathToUserBranch));
+        for (SendingFile sendingFile : sendingFiles) {
+            sendingFile.path = sendingFile.path.replace(pathToUserFolder + "\\" + branch, "");
+        }
+        return makeJSONString(sendingFiles);
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
