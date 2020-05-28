@@ -1,0 +1,275 @@
+body {
+    margin: 0;
+    top: 0;
+    left: 0;
+    font-family: 'Roboto', sans-serif;
+    color: black;
+}
+
+.align_center {
+    background: #f6f6f6;
+    position: relative;
+    border-bottom: 2px solid #dbdbdb;
+    width: 100%;
+}
+
+.align_center:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.align_center_to_left {
+    position: relative;
+    right: 50%;
+    float: right;
+}
+
+.align_center_to_right {
+    position: relative;
+    z-index: 1;
+    right: -50%;
+}
+
+.mainTop {
+    padding: 0px 10px 10px;
+    width: 1200px;
+    margin: 0 auto;
+    height: 50px;
+}
+
+.mainTopRight {
+    float: right;
+    width: 40%;
+    text-align: right;
+    padding-right: 20px;
+}
+
+.mainTopRight div {
+    float: right;
+}
+
+.mainTopLeft {
+    float: left;
+    height: 100%;
+    width: 50%;
+}
+
+.mainTopLeft div {
+    display: inline-block;
+    float: left;
+    height: 41px;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+}
+
+#userNameLogin {
+    display: inline-block;
+    float: right;
+    height: 41px;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+    padding-top: 15px;
+
+}
+
+.mainTopLeftImg img {
+    height: 50px;
+}
+
+#TopTasks {
+    padding-top: 18px;
+}
+
+#TopProjects {
+    padding-top: 18px;
+}
+
+#TopIssues {
+    padding-top: 18px;
+}
+
+#TopTasks:hover {
+    border-bottom: 1px solid black;
+    background: #eaeaea;
+}
+
+#TopProjects:hover {
+    border-bottom: 1px solid black;
+    background: #eaeaea;
+}
+
+#TopIssues:hover {
+    border-bottom: 1px solid black;
+    background: #eaeaea;
+}
+
+.TOPlogoutButton {
+    padding: 10px;
+    padding-right: 15px;
+    padding-left: 15px;
+    transition: all .3s ease;
+    cursor: pointer;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+    border: 2px solid #97273b;
+    color: #97273b;
+    border-radius: 4px;
+    text-align: center;
+    background: #edeef0;
+    float: right;
+    margin-top: 8px;
+}
+
+.issuesInfo {
+    display: inline-block;
+    width: 1210px;
+    color: #333;
+}
+
+.issuesInfo div {
+    float: left;
+}
+
+.issuesInfoList {
+    height: 640px;
+    border-left: 2px solid #dbdbdb;
+    border-right: 2px solid #dbdbdb;
+    width: 240px;
+}
+
+.issuesInfoCommits {
+    height: 640px;
+    border-right: 2px solid #dbdbdb;
+    width: 400px;
+}
+
+.issuesInfoCommitsText {
+    min-height: 640px;
+    width: 560px;
+    border-right: 2px solid #dbdbdb;
+}
+
+.issuesInfoListBranchesContainer {
+    width: 100%;
+}
+
+.issuesInfoListBranchesHeader {
+    color: #333;
+    padding: 5px;
+    width: 236px;
+    background: #edeef0;
+    border-bottom: 2px solid #dbdbdb;
+}
+
+.projectBox {
+    width: 100%;
+    font-size: 14px;
+    padding: 5px;
+    width: 229px;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.projectBox:hover {
+    background: #f9f8ff;
+}
+
+.projectBox div {
+    float: left;
+}
+
+.issuesInfoListBranchesImg {
+    float: left;
+}
+
+.issuesInfoListBranchesImg img {
+    margin-top: 0px;
+    width: 30px;
+}
+
+.issuesInfoListBranchesUserName {
+    width: 100%;
+    color: black;
+    float: left;
+}
+
+.issuesInfoListBranchesBrancesName {
+    float: left;
+}
+
+.issuesInfoListBranchesText {
+    padding-left: 5px;
+    float: left;
+    width: 180px;
+}
+
+.issuesInfoCommitsHeader {
+    color: #333;
+    padding: 5px;
+    width: 398px;
+    background: #edeef0;
+    border-bottom: 2px solid #dbdbdb;
+}
+
+.issuesInfoCommitsCommit {
+    padding: 5px;
+}
+
+.issuesInfoCommitsCommitInfo {
+    font-size: 16px;
+    width: 100%;
+    color: black;
+}
+
+.issuesInfoCommitsCommitText {
+    width: 100%;
+    font-size: 12px;
+}
+
+.issuesInfoCommitsCommitInfoID {
+    float: left;
+}
+
+.issuesInfoCommitsCommitInfoName {
+    float: left;
+    padding-left: 5px;
+}
+
+.issuesInfoCommitsText {
+    white-space: nowrap;
+    overflow-x: scroll;
+}
+
+.issuesInfoCommitsTextLine {
+    width: 100%;
+    font-size: 12px;
+}
+
+.issuesInfoCommitsTextLineNumber {
+    float: left;
+}
+
+.issuesInfoCommitsTextLineText {
+    float: left;
+}
+
+.colorRed {
+    background: #f68d93;
+}
+
+.colorYellow {
+    background: #f8f5c6;
+}
+
+.colorGreen {
+    background: #badf9a;
+}
+.issuesInfoCommitsTextHeader
+{
+    color: #333;
+    background: #edeef0;
+    border-bottom: 2px solid #dbdbdb;
+    width: 100%;
+    padding: 5px;
+}
