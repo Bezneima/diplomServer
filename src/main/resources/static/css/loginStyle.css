@@ -1,0 +1,87 @@
+body{
+	font-family: 'Roboto', sans-serif;
+	color:black;
+}
+.loginForm{
+
+	width: 400px;
+	height: 360px;
+	margin: 0 auto;
+	box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+	border-radius: 8px;
+	padding: 10px;
+	padding-top: 20px;	
+	margin-top: 100px;
+}
+.loginTop{
+	margin-top: 10px;
+	text-align: center;
+	height: 70px;
+}
+.loginTop div{
+	margin-left: 5px;
+	float: left;
+	text-align: left;
+	font-size: 12px;
+}
+.loginTop img{
+	height: 58px;
+}
+.loginMainHeader{
+	margin-left: 20px;
+	text-align: left;
+	font-size: 18px;
+	margin-top: 10px;
+	font-weight: 550;
+	margin-bottom: 10px;
+}
+.loginMainInputs span{
+	margin-left: 20px;
+	font-size: 14px;
+	font-weight: 540;
+}
+.loginMainInputs div {
+	margin: 0 auto;
+	width: 90%;
+	height: 38px;
+	border: 1px solid grey;
+	border-radius: 4px;
+	margin-top: 16px;
+	margin-bottom: 16px;
+}
+.loginMainInputs div:hover {
+		transition: all .3s ease;
+		box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+.loginMainInputs input{
+	margin-left: 10px;
+	border: 0px;
+	outline:none;
+	width: 95%;
+	height: 36px;
+}
+.loginFooter
+{
+	height: 20px;
+	margin-top: 16px;
+}
+.loginFooterButton{
+	padding: 15px;
+	transition: all .3s ease;
+	    cursor: pointer;
+	box-shadow: 0 2px 16px rgba(0,0,0,0.1);
+	background: #97273b;
+	border: 1px solid #832032;
+	border-radius: 4px;
+	text-align: center;
+	color: white;
+	width: 120px;
+	margin-right: 20px;
+	float: right;
+}
+.loginFooterButton:hover
+{
+	background: #761e2e;
+		box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+	border:1px solid #631a27;
+}
