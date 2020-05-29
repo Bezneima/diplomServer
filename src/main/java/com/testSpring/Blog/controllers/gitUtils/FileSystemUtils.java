@@ -40,7 +40,7 @@ public class FileSystemUtils {
         // Я должен записать хранится ли это файлом или метаданными
         // Записываю файл полностью и сравниваю с хранимым файлом прошлой версии в коммит возвращаю разницу по строчкам
         try {
-            commit.fileText = giveMetaDataFromBranch(file, pathToUserBranch, path);
+            commit.fileText = giveMetaDataFromBranch(file, pathToUserBranch, path, fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -130,14 +130,14 @@ public class FileSystemUtils {
     }
 
     //TODO Слишком криво переписать, иначе гг;
-    private static List<FilesChangePojo> giveMetaDataFromBranch(MultipartFile file, String pathToUserBranch, String path) throws IOException {
+    private static List<FilesChangePojo> giveMetaDataFromBranch(MultipartFile file, String pathToUserBranch, String path, String fileName) throws IOException {
         List<FilesChangePojo> outputResult = new ArrayList<>();
         File fileInServer = new File(pathToUserBranch + "\\" + path);
         List<FilesChangePojo> savedFileLines = new ArrayList<>();
         AtomicInteger saveidLineId = new AtomicInteger();
         if (fileInServer.exists()) {//Я должен разбить его по линиям
             Files.lines(Paths.get(fileInServer.getPath()), StandardCharsets.UTF_8).forEach(line -> {
-                savedFileLines.add(new FilesChangePojo(saveidLineId.getAndIncrement(), line, file.getName(), pathToUserBranch + "\\" + path));
+                savedFileLines.add(new FilesChangePojo(saveidLineId.getAndIncrement(), line, fileName, pathToUserBranch + "\\" + path));
             });
         }
         // Считал хранимый файл на сервере
@@ -149,7 +149,7 @@ public class FileSystemUtils {
             InputStream is = file.getInputStream();
             br = new BufferedReader(new InputStreamReader(is));
             while ((line = br.readLine()) != null) {
-                inputFileLines.add(new FilesChangePojo(saveidLineId.getAndIncrement(), line, file.getName(), pathToUserBranch + "\\" + path));
+                inputFileLines.add(new FilesChangePojo(saveidLineId.getAndIncrement(), line, fileName, pathToUserBranch + "\\" + path));
             }
         } catch (IOException e) {
             System.err.println(e.getMessage());

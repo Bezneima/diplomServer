@@ -4,6 +4,7 @@ class textLineClass {
     constructor() {
         this.lineNumber;
         this.text;
+        this.status = "NORMAL";
     }
 }
 
@@ -79,6 +80,7 @@ function showFileText(commitID, commitArray) {
     textContainer.html("<div class=\"issuesInfoCommitsTextHeader\">Изменения</div>");
 
     commitArray = sortCommit(commitArray);
+    console.log(commitArray);
 
     let listOfFiles = [];
     for (let i = 0; i < commitArray.length; i++) {
@@ -92,10 +94,60 @@ function showFileText(commitID, commitArray) {
 
     let listOfFilesText = [];
     for (let i = 0; i < listOfFiles.length; i++) {
+        console.log(listOfFiles);
         listOfFilesText.push(getAllFileLinesFromAllCommits(commitArray, listOfFiles[i], commitID));
+        // тут хронятся строчки текста файла
+        console.log(listOfFilesText);
+        let fileStringContainer = "";
+        fileStringContainer += "<div style='width: 100%;' ><div onclick=\"view(this)\" style='cursor:pointer;'>" + listOfFiles[i] + "</div><div id=\"" + listOfFiles[i].replace('.', '') + "\"  class='issuesInfoCommitsText'>";
+        // тут как раз строчки все, и у меня в listOfFilesText[i] хранится список прошлых строчек, нужно заменить те строчки что в коммите и все будет збц
+        for (let j = 0; j < commitArray.length; j++) {// что ты делаешь? дальше только работа, дети, суицид
+            if (commitArray[j].Id === commitID) {
+                for (let k = 0; k < commitArray[j].fileText.length; k++) {
+                    //console.log(commitArray[j].fileText[k].fileName);
+                    if (commitArray[j].fileText[k].fileName === listOfFiles[i]) {
+                        if (commitArray[j].fileText[k].status !== "ADDED") {
+                            for (let z = 0; z < listOfFilesText[i].length; z++) {
+                                if (commitArray[j].fileText[k].lineNumber === listOfFilesText[i][z].lineNumber) {
+                                    listOfFilesText[i][z].status = commitArray[j].fileText[k].status;
+                                }
+                            }
+                        } else {
+                            let addedTextLine = new textLineClass();
+                            addedTextLine.lineNumber = commitArray[j].fileText[k].lineNumber;
+                            addedTextLine.text = commitArray[j].fileText[k].textOfChange;
+                            addedTextLine.status = "ADDED";
+                            listOfFilesText[i].push(addedTextLine);
+                        }
+                    }
+                }
+            }
+        }
+        // Тут имею все линии с уже установленными статусами;
+        for (let j = 0; j < listOfFilesText[i].length; j++) {
+            switch (listOfFilesText[i][j].status) {
+                case "CHANGED":
+                    fileStringContainer += "<div class='issuesInfoCommitsTextLine colorYellow'>" + listOfFilesText[i][j].text + "</div>";
+                    break;
+                case "REMOVED":
+                    fileStringContainer += "<div class='issuesInfoCommitsTextLine colorRed'>" + listOfFilesText[i][j].text + "</div>";
+                    break;
+                case "ADDED":
+                    fileStringContainer += "<div class='issuesInfoCommitsTextLine colorGreen'>" + listOfFilesText[i][j].text + "</div>";
+                    break;
+                case "NORMAL":
+                    fileStringContainer += "<div class='issuesInfoCommitsTextLine'>" + listOfFilesText[i][j].text + "</div>";
+                    break;
+            }
+
+        }
+        fileStringContainer += "</div></div>";
+        $(".issuesInfoCommitsText").append(fileStringContainer);
+        //  <p>Нажми <a href="#hidden1" onclick="view('hidden1'); return false">эту ссылку</a></p>
+        //    <div id="hidden1" style="display: none;">
+        //        <h3>Тут заголовок</h3>
+        //    <p>А тут основной текст</p></div>
     }
-
-
 }
 
 //Получает коммит и смотрит возвращает список имен файлов которые изменялись
@@ -135,28 +187,26 @@ function sortCommit(a) {
 function getAllFileLinesFromAllCommits(commitArray, fileName, commitID) {
     // commitArray - все коммиты;
     // fileName - имя проверяемоего файла;
-    console.log(commitArray);
     let result = [];
-    for (let i = 0; i < commitID-1; i++) {
+    for (let i = 0; i < commitID - 1; i++) {
         for (let j = 0; j < commitArray[i].fileText.length; j++) {
             if (commitArray[i].fileText[j].fileName === fileName) {
-                {
-                    result.push(commitArray[i].fileText[j]);
-                }
+                result.push(commitArray[i].fileText[j]);
             }
         }
     }
-
+    // тут я собрал текст до прошлого коммита, чтоб потом знать че помечать цветами;)
     console.log(result, fileName);
-    console.log(confluenceFileTextFromLines(result, fileName));
+    let tmp = confluenceFileTextFromLines(result, fileName);
+    console.log(tmp);
 
-// return confluenceFileTextFromLines();
+    return tmp;
 }
 
 function confluenceFileTextFromLines(fileLines, fileName) {
     // let textLine = new textLineClass();
     let allTextInFile = [];
-    console.log(fileLines);
+
     for (let i = 0; i < fileLines.length; i++) {
         switch (fileLines[i].status) {
             case "ADDED":
@@ -199,4 +249,16 @@ function removeItemOnce(arr, id) {
         arr.splice(index, 1);
     }
     return arr;
+}
+
+function view(idName) {
+    let tmp = $($(idName).parent().find("div").get(1));
+    if (tmp.is(":hidden")) {
+        tmp.show();
+    } else {
+        tmp.hide();
+    }
+
+    //style = document.getElementById(n).style;
+    //style.display = (style.display == 'block') ? 'none' : 'block';
 }

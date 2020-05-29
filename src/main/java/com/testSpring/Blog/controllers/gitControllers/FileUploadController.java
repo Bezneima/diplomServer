@@ -79,7 +79,7 @@ public class FileUploadController {
         FileSystemUtils.makePathToFile(pathToUserBranch + path);
 
         if (!file.isEmpty()) {
-            changeOrAddFileToBranch(hash, userName, branch, pathToUserBranch, path, file.getName(), comment, file);
+            changeOrAddFileToBranch(hash, userName, branch, pathToUserBranch, path, nameOfFile, comment, file);
             return "файлы успешно загружены";
         } else {
             return "Вам не удалось загрузить " + path + " потому что файл пустой.";

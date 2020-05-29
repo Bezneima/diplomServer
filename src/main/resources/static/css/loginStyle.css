@@ -32,13 +32,13 @@ body{
 	text-align: left;
 	font-size: 18px;
 	margin-top: 10px;
-	font-weight: 550;
+	font-weight: 500;
 	margin-bottom: 10px;
 }
 .loginMainInputs span{
 	margin-left: 20px;
 	font-size: 14px;
-	font-weight: 540;
+	font-weight: 500;
 }
 .loginMainInputs div {
 	margin: 0 auto;
